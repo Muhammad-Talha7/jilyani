@@ -3,20 +3,15 @@ import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    <nav className="bg-blue-600 text-white px-6 py-4 shadow-md">
-      <div className="max-w-7xl mx-auto flex justify-between items-center">
-        {/* Left side links */}
-        <div className="flex space-x-6">
-          <Link to="/" className="hover:underline">Home</Link>
-          <Link to="/about" className="hover:underline">About</Link>
-          <Link to="/services" className="hover:underline">Services</Link>
-        </div>
-
-        {/* Right side links */}
-        <div className="flex space-x-6">
-          <Link to="/projects" className="hover:underline">Projects</Link>
-          <Link to="/contact" className="hover:underline">Contact</Link>
-        </div>
+    <nav className="bg-white shadow-md py-4 px-6 flex justify-between items-center">
+      <div className="flex space-x-6">
+        <Link to="/" className="text-lg font-semibold text-gray-800 hover:text-blue-600 transition">Home</Link>
+        <Link to="/about" className="text-lg font-semibold text-gray-800 hover:text-blue-600 transition">About</Link>
+        <Link to="/services" className="text-lg font-semibold text-gray-800 hover:text-blue-600 transition">Services</Link>
+      </div>
+      <div className="flex space-x-6">
+        <Link to="/contact" className="text-lg font-semibold text-gray-800 hover:text-blue-600 transition">Contact</Link>
+        <Link to="/blog" className="text-lg font-semibold text-gray-800 hover:text-blue-600 transition">Blog</Link>
       </div>
     </nav>
   );
