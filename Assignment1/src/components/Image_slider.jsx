@@ -1,58 +1,68 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const images = [
+  "https://images.unsplash.com/photo-1746990381809-65f75d2a32e7?q=80&w=1952&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1746990381809-65f75d2a32e7?q=80&w=1952&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1747077214210-90be045c9361?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDEyfGJvOGpRS1RhRTBZfHxlbnwwfHx8fHw%3D",
+  "https://images.unsplash.com/photo-1744123101974-b43c01979548?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDE4fGJvOGpRS1RhRTBZfHxlbnwwfHx8fHw%3D",
+  "https://images.unsplash.com/photo-1746471626032-d5dd71f0ba9c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDIzfGJvOGpRS1RhRTBZfHxlbnwwfHx8fHw%3D",
+  "https://images.unsplash.com/photo-1746513791663-e1fcea6208ac?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDI0fGJvOGpRS1RhRTBZfHxlbnwwfHx8fHw%3D",
 ];
 
+function ImageSlider () {
+  const [index, setIndex] = useState(0);
 
-const ImageSlider = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
 
-  const nextSlide = () => {
-    setCurrentIndex((currentIndex + 1) % images.length);
-  };
-
-  const prevSlide = () => {
-    setCurrentIndex((currentIndex - 1 + images.length) % images.length);
+  const goToSlide = (i) => {
+    setIndex(i);
   };
 
   return (
-    <div className="relative w-full h-screen overflow-hidden">
+    <div className="relative w-full h-[500px] overflow-hidden shadow-md">
+      {/* Slides */}
       <div
-        className="absolute inset-0 bg-cover bg-center transition-all duration-1000 ease-in-out"
-        style={{ backgroundImage: `url(${images[currentIndex]})` }}
-      />
-
-      <div className="absolute inset-0 bg-black bg-opacity-40 z-10" />
-
-      <div className="absolute z-20 inset-0 flex flex-col justify-center items-center text-white text-center px-6">
-        <h1 className="text-5xl md:text-7xl font-bold drop-shadow-lg mb-4">Explore Beauty</h1>
-        <p className="text-xl md:text-2xl font-light drop-shadow-md">Swipe through moments of wonder</p>
+        className="flex transition-transform duration-700 ease-in-out"
+        style={{ transform: `translateX(-${index * 100}%)` }}
+      >
+        {images.map((src, i) => (
+          <img
+            key={i}
+            src={src}
+            alt={`Slide ${i + 1}`}
+            className="w-full flex-shrink-0 object-cover h-[500px]"
+          />
+        ))}
       </div>
 
-      <button
-        onClick={prevSlide}
-        className="absolute left-4 top-1/2 transform -translate-y-1/2 z-30 text-white bg-black bg-opacity-50 hover:bg-opacity-80 p-3 rounded-full"
-      >
-        ❮
-      </button>
+      {/* Overlay */}
+      <div className="absolute top-0 left-0 w-full h-full bg-black/40 z-10"></div>
 
-      <button
-        onClick={nextSlide}
-        className="absolute right-4 top-1/2 transform -translate-y-1/2 z-30 text-white bg-black bg-opacity-50 hover:bg-opacity-80 p-3 rounded-full"
-      >
-        ❯
-      </button>
+      {/* Centered content */}
+      <div className="absolute z-20 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-center px-4">
+        <h1 className="text-4xl font-bold mb-2">Welcome to Our Site</h1>
+        <p className="text-lg">Discover amazing products and services</p>
+      </div>
 
-      <div className="absolute bottom-5 w-full flex justify-center z-30 space-x-2">
-        {images.map((_, index) => (
-          <div
-            key={index}
-            className={`w-3 h-3 rounded-full ${index === currentIndex ? "bg-white" : "bg-gray-400"}`}
-          />
+      {/* Dots */}
+      <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
+        {images.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => goToSlide(i)}
+            className={`w-3 h-3 rounded-full transition duration-300 ${
+              index === i ? "bg-white" : "bg-gray-400"
+            }`}
+          ></button>
         ))}
       </div>
     </div>
   );
-};
+}
 
-export default ImageSlider;
+export default ImageSlider ;
